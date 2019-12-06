@@ -1560,12 +1560,13 @@ Resources:
             #!/bin/bash -x
             QSLOCATION=https://${QSS3BucketName}.${S3Region}.amazonaws.com/${QSS3KeyPrefix}
             yum install -y git
-            git clone https://github.com/aws-quickstart/quickstart-linux-utilities.git
+            #git clone https://github.com/aws-quickstart/quickstart-linux-utilities.git
+            aws s3 cp --recursive s3://${QSS3BucketName}/quickstart-linux-utilities quickstart-linux-utilities
             export P=/quickstart-linux-utilities/quickstart-cfn-tools.source
             source $P
             qs_bootstrap_pip || qs_err " pip bootstrap failed "
             qs_aws-cfn-bootstrap || qs_err " cfn bootstrap failed "
-            pip install awscli  &> /var/log/userdata.awscli_install.log || qs_err " awscli install failed "
+            pip install -i https://${QSS3BucketName}.${S3Region}.amazonaws.com/pip/simple awscli  &> /var/log/userdata.awscli_install.log || qs_err " awscli install failed "
             export QS_S3URI=s3://${QSS3BucketName}/${QSS3KeyPrefix}
             export AWS_REGION=${AWS::Region}
             export AWS_STACKNAME=${AWS::StackName}
@@ -1639,12 +1640,13 @@ Resources:
             #!/bin/bash -x
             export QSLOCATION=https://${QSS3BucketName}.${S3Region}.amazonaws.com/${QSS3KeyPrefix}
             yum install -y git
-            git clone https://github.com/aws-quickstart/quickstart-linux-utilities.git
+            # git clone https://github.com/aws-quickstart/quickstart-linux-utilities.git
+            aws s3 cp --recursive s3://${QSS3BucketName}/quickstart-linux-utilities quickstart-linux-utilities
             export P=/quickstart-linux-utilities/quickstart-cfn-tools.source
             source $P
             qs_bootstrap_pip || qs_err " pip bootstrap failed "
             qs_aws-cfn-bootstrap || qs_err " cfn bootstrap failed "
-            pip install awscli  &> /var/log/userdata.awscli_install.log || qs_err " awscli install failed "
+            pip install -i https://${QSS3BucketName}.${S3Region}.amazonaws.com/pip/simple awscli  &> /var/log/userdata.awscli_install.log || qs_err " awscli install failed "
             export QS_S3URI=s3://${QSS3BucketName}/${QSS3KeyPrefix}
             export AWS_REGION=${AWS::Region}
             export AWS_STACKNAME=${AWS::StackName}
@@ -1722,12 +1724,13 @@ Resources:
             #!/bin/bash -x
             export QSLOCATION=https://${QSS3BucketName}.${S3Region}.amazonaws.com/${QSS3KeyPrefix}
             yum install -y git
-            git clone https://github.com/aws-quickstart/quickstart-linux-utilities.git
+            # git clone https://github.com/aws-quickstart/quickstart-linux-utilities.git
+            aws s3 cp --recursive s3://${QSS3BucketName}/quickstart-linux-utilities quickstart-linux-utilities
             export P=/quickstart-linux-utilities/quickstart-cfn-tools.source
             source $P
             qs_bootstrap_pip || qs_err " pip bootstrap failed "
             qs_aws-cfn-bootstrap || qs_err " cfn bootstrap failed "
-            pip install awscli  &> /var/log/userdata.awscli_install.log || qs_err " awscli install failed "
+            pip install -i https://${QSS3BucketName}.${S3Region}.amazonaws.com/pip/simple awscli  &> /var/log/userdata.awscli_install.log || qs_err " awscli install failed "
             export QS_S3URI=s3://${QSS3BucketName}/${QSS3KeyPrefix}
             export AWS_REGION=${AWS::Region}
             export AWS_STACKNAME=${AWS::StackName}
@@ -1805,12 +1808,13 @@ Resources:
             #!/bin/bash -x
             export QSLOCATION=https://${QSS3BucketName}.${S3Region}.amazonaws.com/${QSS3KeyPrefix}
             yum install -y git
-            git clone https://github.com/aws-quickstart/quickstart-linux-utilities.git
+            # git clone https://github.com/aws-quickstart/quickstart-linux-utilities.git
+            aws s3 cp --recursive s3://${QSS3BucketName}/quickstart-linux-utilities quickstart-linux-utilities
             export P=/quickstart-linux-utilities/quickstart-cfn-tools.source
             source $P
             qs_bootstrap_pip || qs_err " pip bootstrap failed "
             qs_aws-cfn-bootstrap || qs_err " cfn bootstrap failed "
-            pip install awscli  &> /var/log/userdata.awscli_install.log || qs_err " awscli install failed "
+            pip install -i https://${QSS3BucketName}.${S3Region}.amazonaws.com/pip/simple awscli  &> /var/log/userdata.awscli_install.log || qs_err " awscli install failed "
             export QS_S3URI=s3://${QSS3BucketName}/${QSS3KeyPrefix}
             export AWS_REGION=${AWS::Region}
             export AWS_STACKNAME=${AWS::StackName}
@@ -2274,12 +2278,13 @@ Resources:
             export LOG_GROUP=${OpenshiftLogGroup}
             for e in $(echo "${AnsibleAdditionalEnvironmentVariables}" | tr ',' ' '); do export $e; done
             yum install -y git
-            git clone https://github.com/aws-quickstart/quickstart-linux-utilities.git
+            # git clone https://github.com/aws-quickstart/quickstart-linux-utilities.git
+            aws s3 cp --recursive s3://${QSS3BucketName}/quickstart-linux-utilities quickstart-linux-utilities
             export P=/quickstart-linux-utilities/quickstart-cfn-tools.source
             source $P
             qs_bootstrap_pip || qs_err " pip bootstrap failed "
             qs_aws-cfn-bootstrap || qs_err "cfn bootstrap failed"
-            pip install awscli  &> /var/log/userdata.awscli_install.log || qs_err " awscli install failed "
+            pip install -i https://${QSS3BucketName}.${S3Region}.amazonaws.com/pip/simple awscli  &> /var/log/userdata.awscli_install.log || qs_err " awscli install failed "
             aws s3 cp ${!QS_S3URI}scripts/ansibleconfigserver_bootstrap.sh ./bootstrap.sh
             chmod +x bootstrap.sh
             if [[ -n "${AnsiblePostInstallScript}" ]]; then

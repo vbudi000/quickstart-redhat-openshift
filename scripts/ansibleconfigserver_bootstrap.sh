@@ -121,8 +121,9 @@ rm ./amazon-ssm-agent.rpm
 cd -
 
 if [ "${GET_ANSIBLE_FROM_GIT}" == "True" ]; then
-  CURRENT_PLAYBOOK_VERSION=https://github.com/openshift/openshift-ansible/archive/openshift-ansible-${OCP_ANSIBLE_RELEASE}.tar.gz
-  curl  --retry 5  -Ls ${CURRENT_PLAYBOOK_VERSION} -o openshift-ansible.tar.gz
+  #CURRENT_PLAYBOOK_VERSION=https://github.com/openshift/openshift-ansible/archive/openshift-ansible-${OCP_ANSIBLE_RELEASE}.tar.gz
+  #curl  --retry 5  -Ls ${CURRENT_PLAYBOOK_VERSION} -o openshift-ansible.tar.gz
+  aws s3 cp ${QS_S3URI}/../openshift-ansible.tar.gz openshift-ansible.tar.gz
   tar -zxf openshift-ansible.tar.gz
   rm -rf /usr/share/ansible
   mkdir -p /usr/share/ansible
@@ -185,9 +186,12 @@ scp $AWSSB_SETUP_HOST:/etc/origin/master/admin.kubeconfig ~/.kube/config
 if [ "${ENABLE_AWSSB}" == "Enabled" ]; then
     mkdir -p ~/aws_broker_install
     cd ~/aws_broker_install
-    qs_retry_command 10 wget https://raw.githubusercontent.com/awslabs/aws-servicebroker/release-${SB_VERSION}/packaging/openshift/deploy.sh
-    qs_retry_command 10 wget https://raw.githubusercontent.com/awslabs/aws-servicebroker/release-${SB_VERSION}/packaging/openshift/aws-servicebroker.yaml
-    qs_retry_command 10 wget https://raw.githubusercontent.com/awslabs/aws-servicebroker/release-${SB_VERSION}/packaging/openshift/parameters.env
+    #qs_retry_command 10 wget https://raw.githubusercontent.com/awslabs/aws-servicebroker/release-${SB_VERSION}/packaging/openshift/deploy.sh
+    #qs_retry_command 10 wget https://raw.githubusercontent.com/awslabs/aws-servicebroker/release-${SB_VERSION}/packaging/openshift/aws-servicebroker.yaml
+    #qs_retry_command 10 wget https://raw.githubusercontent.com/awslabs/aws-servicebroker/release-${SB_VERSION}/packaging/openshift/parameters.env
+    aws s3 cp ${QS_S3URI}../aws-servicebroker/release-${SB_VERSION}/packaging/openshift/deploy.sh deploy.sh
+    aws s3 cp ${QS_S3URI}../aws-servicebroker/release-${SB_VERSION}/packaging/openshift/aws-servicebroker.yaml aws-servicebroker.yaml
+    aws s3 cp ${QS_S3URI}../aws-servicebroker/release-${SB_VERSION}/packaging/openshift/parameters.env parameters.env
     chmod +x deploy.sh
     sed -i "s/TABLENAME=awssb/TABLENAME=${SB_TABLE}/" parameters.env
     sed -i "s/TARGETACCOUNTID=/TARGETACCOUNTID=${SB_ACCOUNTID}/" parameters.env

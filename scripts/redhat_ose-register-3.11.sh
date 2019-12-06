@@ -6,23 +6,29 @@ source ${P}
 
 yum clean all
 rm -rf /var/cache/yum
+satellite_server=
+mkdir /etc/yum.repos.d/disabled
+mv /etc/yum.repos.d/*.repo /etc/yum.repos.d/disabled
+cat <<EOF > /etc/yum.repos.d/ose.repo
+[rhel-7-server-rpms]
+name=rhel-7-server-rpms
+baseurl=http://${satellite_server}/repos/rhel-7-server-rpms
+enabled=1
+gpgcheck=0
+[rhel-7-server-extras-rpms]
+name=rhel-7-server-extras-rpms
+baseurl=http://${satellite_server}/repos/rhel-7-server-extras-rpms
+enabled=1
+gpgcheck=0
+[rhel-7-server-ansible-2.6-rpms]
+name=rhel-7-server-ansible-2.6-rpms
+baseurl=http://${satellite_server}/repos/rhel-7-server-ansible-2.6-rpms
+enabled=1
+gpgcheck=0
+[rhel-7-server-ose-3.11-rpms]
+name=rhel-7-server-ose-3.11-rpms
+baseurl=http://${satellite_server}/repos/rhel-7-server-ose-3.11-rpms
+enabled=1
+gpgcheck=0
+EOF
 
-CREDS=$(aws secretsmanager get-secret-value --secret-id ${1} --region ${AWS_REGION} --query SecretString --output text)
-REDHAT_USERNAME=$(echo ${CREDS} | jq -r .user)
-REDHAT_PASSWORD=$(echo ${CREDS} | jq -r .password)
-REDHAT_POOLID=$(echo ${CREDS} | jq -r .poolid)
-
-qs_retry_command 20 subscription-manager register --username=${REDHAT_USERNAME} --password=${REDHAT_PASSWORD} --force
-qs_retry_command 20 subscription-manager attach --pool=${REDHAT_POOLID}
-qs_retry_command 20 subscription-manager status
-qs_retry_command 20 subscription-manager repos --enable="rhel-7-server-rpms" \
-    --enable="rhel-7-server-extras-rpms" \
-    --enable="rhel-7-server-ose-3.11-rpms" \
-    --enable="rhel-7-fast-datapath-rpms" \
-    --enable="rhel-7-server-ansible-2.6-rpms" \
-    --enable="rh-gluster-3-client-for-rhel-7-server-rpms" \
-    --enable="rhel-7-server-optional-rpms"
-
-var=($(subscription-manager identity))
-UUID="${var[2]}"
-aws ec2 create-tags --resources ${INSTANCE_ID} --tags Key=UUID,Value=$UUID --region ${AWS_REGION}

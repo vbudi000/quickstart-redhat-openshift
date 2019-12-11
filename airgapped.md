@@ -45,13 +45,34 @@ Collect the following to load into the S3 bucket:
 
 - Mirror of `https://github.com/vbudi000/quickstart-redhat-openshift` and `https://github.vom/vbudi000/quickstart-linux-utilities`
 
-- PIP installation images
+- PIP installation images (see []())
 
   - get-pip.py: `curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py` (must be public)
   - awscli.tar.gz (must be public)
+    ```
+    boto3
+    awscli
+    ```
   - pip.tar.gz (must be public)
+    ```
+    pip
+    wheel
+    setuptools
+    ```
   - awslogs.tar.gz
+    ```
+    awscli-cwlogs==1.4.6
+    virtualenv
+    ```
   - cfn.tar.gz
+    ```
+    https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz
+    ```
+
+  To create the tar.gz files, do the following (req.txt is the content listed after the files above):
+
+  - `mkdir tmp;pip wheel -r req.txt -w tmp`
+  - `cd tmp; tar -xf ../<fn>.tar.gz *;cd .. rm -rf tmp`
 
 - Files for quickstart utilities
 
@@ -671,7 +692,7 @@ Now the target registry is ready and can be transferred to the airgapped environ
 
 2. Copy dockerreg.tar.gz into an S3 bucket for the installation
 
-3. Deploy the registry using a cloudformation stack:
+3. Deploy the registry using a cloudformation stack: **NOT IMPLEMENTED**
 
   ```
   aws cloudformation --template-body file://templates/mirrorregistry.template --parameter file://mr.json --stack-name mirrorregistry
@@ -681,7 +702,7 @@ Now the target registry is ready and can be transferred to the airgapped environ
 
 For the networking resources, you must setup the following:
 
-- VPC
-- Subnet
+- VPC: create a VPC and store the id
+- Subnet: create subnet(s) and store the id
 - Endpoint for S3
 - Route table and security group for the S3 endpoint

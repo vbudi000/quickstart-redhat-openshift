@@ -32,14 +32,14 @@ Collect the following to load into the S3 bucket:
   yum -y install yum-utils createrepo
   mkdir /repos
   for repo in \
-rhel-7-server-rpms \
-rhel-7-server-extras-rpms \
-rhel-7-server-ansible-2.6-rpms \
-rhel-7-server-ose-3.11-rpms
-do
-  reposync --gpgcheck -lm --repoid=${repo} --download_path=/repos
-  createrepo -v /repos/${repo} -o /repos/${repo}
-done  
+    rhel-7-server-rpms \
+    rhel-7-server-extras-rpms \
+    rhel-7-server-ansible-2.6-rpms \
+    rhel-7-server-ose-3.11-rpms
+    do
+      reposync --gpgcheck -lm --repoid=${repo} --download_path=/repos
+      createrepo -v /repos/${repo} -o /repos/${repo}
+    done  
   ```
   All files in the /repos directory must be loaded into the S3 bucket in /repos and made public (ie public readable).
 

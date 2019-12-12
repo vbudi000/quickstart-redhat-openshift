@@ -706,3 +706,5 @@ For the networking resources, you must setup the following:
 - Subnet: create subnet(s) and store the id
 - Endpoint for S3
 - Route table and security group for the S3 endpoint
+
+## Running the CloudFormation

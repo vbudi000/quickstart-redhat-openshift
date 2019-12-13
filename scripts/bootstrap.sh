@@ -21,7 +21,7 @@ systemctl start awslogs || true
 
 cd /tmp
 qs_retry_command 10 yum install -y wget
-qs_retry_command 10 aws s3 cp ${QSS3BucketName}/linux/amazon-ssm-agent.rpm amazon-ssm-agent.rpm 
+qs_retry_command 10 aws s3 cp s3://${QSS3BucketName}/linux/amazon-ssm-agent.rpm amazon-ssm-agent.rpm 
 qs_retry_command 10 yum install -y ./amazon-ssm-agent.rpm
 systemctl start amazon-ssm-agent
 systemctl enable amazon-ssm-agent

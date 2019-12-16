@@ -54,6 +54,9 @@ fi
 fdisk -l
 
 if [ "${LAUNCH_CONFIG}" != "OpenShiftEtcdLaunchConfig" ]; then
+    qs_retry_command 5 aws s3 cp s3://${QSS3BucketName}/linux/domain.crt domain.crt
+    mv domain.crt /etc/pki/ca-trust/source/anchors/domain.crt
+    update-ca-trust
     qs_retry_command 10 yum install docker-client-1.13.1 docker-common-1.13.1 docker-rhel-push-plugin-1.13.1 docker-1.13.1 -y
     systemctl enable docker.service
     qs_retry_command 20 'systemctl start docker.service'

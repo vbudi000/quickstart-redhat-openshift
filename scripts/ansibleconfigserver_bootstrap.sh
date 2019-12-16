@@ -53,9 +53,9 @@ qs_retry_command 10 yum -y install ansible-${ANSIBLE_VERSION}
 
 yum versionlock add ansible
 sed -i 's/#host_key_checking = False/host_key_checking = False/g' /etc/ansible/ansible.cfg
-yum repolist -v | grep OpenShift
+# yum repolist -v | grep OpenShift
 
-qs_retry_command 10 pip install boto3 &> /var/log/userdata.boto3_install.log
+# qs_retry_command 10 pip install boto3 &> /var/log/userdata.boto3_install.log
 mkdir -p /root/ose_scaling/aws_openshift_quickstart
 mkdir -p /root/ose_scaling/bin
 qs_retry_command 10 aws s3 cp ${QS_S3URI}scripts/scaling/aws_openshift_quickstart/__init__.py /root/ose_scaling/aws_openshift_quickstart/__init__.py
@@ -108,9 +108,10 @@ echo openshift_master_console_port=443 >> /tmp/openshift_inventory_userdata_vars
 
 qs_retry_command 10 yum -y install wget git net-tools bind-utils iptables-services bridge-utils bash-completion kexec-tools sos psacct
 # Workaround this not-a-bug https://bugzilla.redhat.com/show_bug.cgi?id=1187057
-pip uninstall -y urllib3
+#pip uninstall -y urllib3
 qs_retry_command 10 yum -y update
-qs_retry_command 10 pip install urllib3
+#qs_retry_command 10 pip install --force-reinstall --ignore-installed --upgrade --no-index --no-deps /awstmp/*
+#qs_retry_command 10 pip install urllib3
 qs_retry_command 10 yum -y install atomic-openshift-excluder atomic-openshift-docker-excluder
 
 cd /tmp
@@ -164,6 +165,7 @@ sed -i 's/#pipelining = False/pipelining = True/g' /etc/ansible/ansible.cfg
 sed -i 's/#log_path/log_path/g' /etc/ansible/ansible.cfg
 sed -i 's/#stdout_callback.*/stdout_callback = json/g' /etc/ansible/ansible.cfg
 sed -i 's/#deprecation_warnings = True/deprecation_warnings = False/g' /etc/ansible/ansible.cfg
+sed -i "s/registry.redhat.io/${PRIVATEREGISTRY}/g" /etc/ansible/hosts
 
 qs_retry_command 50 ansible -m ping all
 

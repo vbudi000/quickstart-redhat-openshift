@@ -234,14 +234,17 @@ Parameters:
     NoEcho: 'true'
   RedhatSubscriptionUserName:
     Description: Enter Redhat RHN User Name
+    Default: ''
     Type: String
   RedhatSubscriptionPassword:
     NoEcho: 'true'
+    Default: ''
     Description: Enter Redhat RHN Password
     Type: String
     AllowedPattern: ^[^ \\']+$
   RedhatSubscriptionPoolID:
     Description: Enter Redhat RHN PoolID
+    Default: ''
     Type: String
   OpenshiftContainerPlatformVersion:
     Description: OpenShift version to deploy

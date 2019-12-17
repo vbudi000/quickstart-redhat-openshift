@@ -47,6 +47,7 @@ Collect the following to load into the S3 bucket:
     --enable="rhel-7-server-rpms" \
     --enable="rhel-7-server-extras-rpms" \
     --enable="rhel-7-server-ose-3.11-rpms" \
+    --enable="rhel-7-fast-datapath-rpms" \`
     --enable="rhel-7-server-ansible-2.6-rpms"
   yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
   yum -y install yum-utils createrepo
@@ -100,6 +101,7 @@ Collect the following to load into the S3 bucket:
 
 - Files for quickstart utilities
 
+  - amazon-ssm-agent.rpm
   - linux/aws-cfn-bootstrap-latest.tar.gz (from https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz)
   - linux/awslogs-agent-setup.py (copy from https://github.com/vbudi000/quickstart-redhat-openshift/scripts/awslogs-agent-setup.py)
   - linux/epel-release-latest-7.noarch.rpm (from https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm)

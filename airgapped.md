@@ -27,10 +27,10 @@ Create an S3 bucket and block public access, you will have to refine the permiss
                 "s3:GetObject",
                 "s3:GetObjectVersion"
             ],
-            "Resource": "arn:aws:s3:::ocp311-airgapped/*",
+            "Resource": "arn:aws:s3:::ocp311-airgapped/*", <=======
             "Condition": {
                 "StringEquals": {
-                    "aws:sourceVpc": "vpc-02020c3d47db35497"
+                    "aws:sourceVpc": "vpc-02020c3d47db35497" <=======
                 }
             }
         }
@@ -66,7 +66,7 @@ Collect the following to load into the S3 bucket:
   ```
   All files in the `/repos` directory must be loaded into the S3 bucket in `/repos`.
 
-- Mirror of `https://github.com/vbudi000/quickstart-redhat-openshift` and `https://github.vom/vbudi000/quickstart-linux-utilities`
+- Mirror of `https://github.com/vbudi000/quickstart-redhat-openshift` and use the develop branch; The other repository that you must download is  `https://github.com/aws-quickstart/quickstart-linux-utilities`; You will need to replace `quickstart-cfn-tools.source` in `quickstart-linux-utilities` from `quickstart-redhat-openshift/scripts`. Change the quickstart-cfn-tools.source for S3 bucket name that you set up; there are 3 occurences of it.
 
 - PIP installation images; as this is airgapped, you must download and stage the python libraries.
 
@@ -101,11 +101,12 @@ Collect the following to load into the S3 bucket:
 
 - Files for quickstart utilities
 
-  - amazon-ssm-agent.rpm
+  - linux/amazon-ssm-agent.rpm (from  https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/latest/linux_amd64/amazon-ssm-agent.rpm)
   - linux/aws-cfn-bootstrap-latest.tar.gz (from https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz)
   - linux/awslogs-agent-setup.py (copy from https://github.com/vbudi000/quickstart-redhat-openshift/scripts/awslogs-agent-setup.py)
   - linux/epel-release-latest-7.noarch.rpm (from https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm)
   - linux/setyum.sh (note change the `satellite_server` parameter)
+
     ``` bash
     #!/bin/bash -e
 
@@ -156,7 +157,7 @@ Collect the following to load into the S3 bucket:
 
 ## Setting up Docker registry
 
-Here I am following the steps in:
+I am following the steps in:
 
 - [Disconnected install](https://docs.openshift.com/container-platform/3.11/install/disconnected_install.html)
 - [Setting up registry](https://docs.openshift.com/container-platform/4.2/installing/installing_restricted_networks/installing-restricted-networks-preparations.html)
